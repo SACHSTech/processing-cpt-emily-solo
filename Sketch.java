@@ -21,6 +21,8 @@ public class Sketch extends PApplet {
   int barWidth = 100;
   int barHeight = 10;
   int barBounce = 20;
+  boolean upPressed = false;
+  boolean downPressed = false;
 
   // health bar variables
   int maxHealth = 100;
@@ -31,8 +33,6 @@ public class Sketch extends PApplet {
   float [] circleX = new float [1];
   float [] circleY = new float [1];
   boolean [] hideCircle = new boolean [1];
-  boolean upPressed = false;
-  boolean downPressed = false;
   float circleDiameter = 50;
   int points = 0;
   int circleAmount = 1;
@@ -88,6 +88,15 @@ public class Sketch extends PApplet {
     homeLava.resize(homeLava.width*2,homeLava.height*2);
     image(homeLava, -200, -150);
   }
+
+    /**
+   * starts game if screen is clicked
+   */
+  public void mousePressed () {
+    if (gameScreen == 0) {
+      gameScreen = 1;;
+    }
+  }
   
   
   /**
@@ -132,49 +141,6 @@ public class Sketch extends PApplet {
     }
 
   /**
-   * game over screen settings
-   */
-  void gameOverScreen () {
-    background(255);
-    textSize(50);
-    fill(0);
-    text("GAME OVER :(", 300, 200 );
-    textSize(30);
-    text("click to play again", 300, 400);
-    text("score: " + points, 300, 300);
-    
-    // resets all variables when clicked to restart the game
-    if (mousePressed) {
-      reset();
-    }
-  } 
-
-  /**
-   * reset variables after they have been changed to start a new game  
-   */ 
-  void reset () {
-      gameScreen = 1;
-      ballX = width/2;
-      ballY = height/3;
-      health = 100;
-      gravity = 1;
-      airfriction = (float) 0.0001;
-      friction = (float) 0.01;
-      ballFallSpeed = 0;
-      ballHorizontalSpeed = 2;
-      points = 0;
-    }
-
-  /**
-   * starts game if screen is clicked
-   */
-    public void mousePressed () {
-    if (gameScreen == 0) {
-      gameScreen = 1;;
-    }
-  }
-
-  /**
    * implements gravity into game by adding friction when the ball touches a surface and airfriction
    */
   void gravity () {
@@ -199,6 +165,24 @@ public class Sketch extends PApplet {
     ballY = surface + 10;
     ballFallSpeed *= -1;
     ballFallSpeed -= (ballFallSpeed * friction);
+  }
+
+  /**
+   * bounces the ball left
+   */
+  void makeBounceLeft(float surface){
+    ballX = surface+10;
+    ballHorizontalSpeed*=-1;
+    ballHorizontalSpeed -= (ballHorizontalSpeed * friction);
+  }
+
+  /**
+   * bounces the ball right
+   */
+  void makeBounceRight(float surface){
+    ballX = surface-10;
+    ballHorizontalSpeed*=-1;
+    ballHorizontalSpeed -= (ballHorizontalSpeed * friction);
   }
 
   /**
@@ -286,32 +270,6 @@ public class Sketch extends PApplet {
   }
 
   /**
-   * controlls the horizontal speed of the ball
-   */
-  void horizontalSpeed () {
-    ballX += ballHorizontalSpeed;
-    ballHorizontalSpeed -= (ballHorizontalSpeed * airfriction);
-  }
-
-  /**
-   * bounces the ball left
-   */
-  void makeBounceLeft(float surface){
-    ballX = surface+10;
-    ballHorizontalSpeed*=-1;
-    ballHorizontalSpeed -= (ballHorizontalSpeed * friction);
-  }
-
-  /**
-   * bounces the ball right
-   */
-  void makeBounceRight(float surface){
-    ballX = surface-10;
-    ballHorizontalSpeed*=-1;
-    ballHorizontalSpeed -= (ballHorizontalSpeed * friction);
-  }
-
-  /**
    * draws the health bar 
    */
   void drawHealthBar () {
@@ -373,5 +331,38 @@ public class Sketch extends PApplet {
       textSize(60);
       text(points, 550, 70);
   }
-}
 
+  /**
+   * game over screen settings
+   */
+  void gameOverScreen () {
+    background(255);
+    textSize(50);
+    fill(0);
+    text("GAME OVER :(", 300, 200 );
+    textSize(30);
+    text("click to play again", 300, 400);
+    text("score: " + points, 300, 300);
+    
+    // resets all variables when clicked to restart the game
+    if (mousePressed) {
+      reset();
+    }
+  } 
+
+  /**
+   * reset variables after they have been changed to start a new game  
+   */ 
+  void reset () {
+      gameScreen = 1;
+      ballX = width/2;
+      ballY = height/3;
+      health = 100;
+      gravity = 1;
+      airfriction = (float) 0.0001;
+      friction = (float) 0.01;
+      ballFallSpeed = 0;
+      ballHorizontalSpeed = 2;
+      points = 0;
+    }
+}
