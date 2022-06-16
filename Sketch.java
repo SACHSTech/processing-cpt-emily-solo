@@ -94,7 +94,7 @@ public class Sketch extends PApplet {
    */
   public void mousePressed () {
     if (gameScreen == 0) {
-      gameScreen = 1;;
+      gameScreen = 1;
     }
   }
   
@@ -103,8 +103,6 @@ public class Sketch extends PApplet {
    * game screen settings
    */
   void gameScreen () {
-    background(255);
-
     imgLava = loadImage("lava.png");
     image(imgLava, 0, 0); 
 
@@ -184,6 +182,15 @@ public class Sketch extends PApplet {
     ballHorizontalSpeed*=-1;
     ballHorizontalSpeed -= (ballHorizontalSpeed * friction);
   }
+
+      /**
+   * controlls the horizontal speed of the ball
+   */
+  void horizontalSpeed () {
+    ballX += ballHorizontalSpeed;
+    ballHorizontalSpeed -= (ballHorizontalSpeed * airfriction);
+  }
+
 
   /**
    * draws the ball
@@ -332,6 +339,7 @@ public class Sketch extends PApplet {
       text(points, 550, 70);
   }
 
+
   /**
    * game over screen settings
    */
@@ -365,4 +373,4 @@ public class Sketch extends PApplet {
       ballHorizontalSpeed = 2;
       points = 0;
     }
-}
+  }
